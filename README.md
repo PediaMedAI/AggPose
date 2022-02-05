@@ -1,2 +1,3 @@
-# AggPose
-AggPose: Deep Aggregation Vision Transformer for Infant Pose Estimation
+# AggPose: Deep Aggregation Vision Transformer for Infant Pose Estimation
+## Introduction
+
