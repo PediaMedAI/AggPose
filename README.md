@@ -5,6 +5,7 @@ Movement and pose assessment of newborns lets trained pediatricians predict neur
 
 This work was accepted by IJCAI-ECAI 2022 AI for Good Track
 
-[Model](https://drive.google.com/drive/folders/1A0FviMaB2UD8Hu5wLzZI7-2XnaWKSxAv?usp=sharing).    
+Model:    
+[Google Drive](https://drive.google.com/drive/folders/1A0FviMaB2UD8Hu5wLzZI7-2XnaWKSxAv?usp=sharing)    
       
 Code will release soon.
