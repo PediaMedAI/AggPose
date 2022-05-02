@@ -8,4 +8,4 @@ This work was accepted by IJCAI-ECAI 2022 AI for Good Track
 Model:    
 [Google Drive](https://drive.google.com/drive/folders/1A0FviMaB2UD8Hu5wLzZI7-2XnaWKSxAv?usp=sharing)    
       
-Code will release soon.
+Modified code will release soon.
