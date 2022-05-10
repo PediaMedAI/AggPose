@@ -1,4 +1,3 @@
-
 # ------------------------------------------------------------------------------
 # Copyright (c) Microsoft
 # Licensed under the MIT License.
@@ -37,8 +36,6 @@ _C.MODEL = CN()
 _C.MODEL.NAME = 'pose_hrnet'
 _C.MODEL.INIT_WEIGHTS = True
 _C.MODEL.PRETRAINED = ''
-_C.MODEL.PRETRAINED_CNN = ''
-_C.MODEL.PRETRAINED_TRANSFORMER = ''
 _C.MODEL.NUM_JOINTS = 17
 _C.MODEL.TAG_PER_JOINT = True
 _C.MODEL.TARGET_TYPE = 'gaussian'
@@ -70,7 +67,6 @@ _C.DATASET.ROT_FACTOR = 30
 _C.DATASET.PROB_HALF_BODY = 0.0
 _C.DATASET.NUM_JOINTS_HALF_BODY = 8
 _C.DATASET.COLOR_RGB = False
-_C.DATASET.COLORJITTER = True
 
 # train
 _C.TRAIN = CN()

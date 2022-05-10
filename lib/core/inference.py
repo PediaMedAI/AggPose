@@ -93,13 +93,12 @@ def get_final_preds(config, hm, center, scale):
     heatmap_width = hm.shape[3]
 
     # post-processing
-    if config.TEST.POST_PROCESS:
-        hm = gaussian_blur(hm, config.TEST.BLUR_KERNEL)
-        hm = np.maximum(hm, 1e-10)
-        hm = np.log(hm)
-        for n in range(coords.shape[0]):
-            for p in range(coords.shape[1]):
-                coords[n,p] = taylor(hm[n][p], coords[n][p])
+    hm = gaussian_blur(hm, config.TEST.BLUR_KERNEL)
+    hm = np.maximum(hm, 1e-10)
+    hm = np.log(hm)
+    for n in range(coords.shape[0]):
+        for p in range(coords.shape[1]):
+            coords[n,p] = taylor(hm[n][p], coords[n][p])
 
     preds = coords.copy()
 

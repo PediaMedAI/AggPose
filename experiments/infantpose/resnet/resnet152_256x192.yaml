@@ -8,25 +8,25 @@ GPUS: (0,1)
 OUTPUT_DIR: 'output'
 LOG_DIR: 'log'
 WORKERS: 1
-PRINT_FREQ: 20
+PRINT_FREQ: 50
 
 DATASET:
   COLOR_RGB: true
   DATASET: 'infantpose'
   DATA_FORMAT: jpg
   FLIP: true
-  NUM_JOINTS_HALF_BODY: 8
+  NUM_JOINTS_HALF_BODY: 9
   PROB_HALF_BODY: 0.3
-  ROOT: 'C:/MixPose/InfantPose'
+  ROOT: 'data/InfantPose'
   ROT_FACTOR: 45
   SCALE_FACTOR: 0.35
   TEST_SET: 'val2017'
   TRAIN_SET: 'train2017'
 MODEL:
   INIT_WEIGHTS: true
-  NAME: pose_hrnet
+  NAME: pose_resnet
   NUM_JOINTS: 21
-  PRETRAINED: 'C:/infantpose/MixPose/models/segformer/mit_b5.pth'
+  PRETRAINED: ''
   TARGET_TYPE: gaussian
   IMAGE_SIZE:
   - 192
@@ -36,78 +36,38 @@ MODEL:
   - 64
   SIGMA: 2
   EXTRA:
-    PRETRAINED_LAYERS:
-    - 'conv1'
-    - 'bn1'
-    - 'conv2'
-    - 'bn2'
-    - 'layer1'
-    - 'transition1'
-    - 'stage2'
-    - 'transition2'
-    - 'stage3'
-    - 'transition3'
-    - 'stage4'
     FINAL_CONV_KERNEL: 1
-    STAGE2:
-      NUM_MODULES: 1
-      NUM_BRANCHES: 2
-      BLOCK: BASIC
-      NUM_BLOCKS:
-      - 4
-      - 4
-      NUM_CHANNELS:
-      - 32
-      - 64
-      FUSE_METHOD: SUM
-    STAGE3:
-      NUM_MODULES: 4
-      NUM_BRANCHES: 3
-      BLOCK: BASIC
-      NUM_BLOCKS:
-      - 4
-      - 4
-      - 4
-      NUM_CHANNELS:
-      - 32
-      - 64
-      - 128
-      FUSE_METHOD: SUM
-    STAGE4:
-      NUM_MODULES: 3
-      NUM_BRANCHES: 4
-      BLOCK: BASIC
-      NUM_BLOCKS:
-      - 4
-      - 4
-      - 4
-      - 4
-      NUM_CHANNELS:
-      - 32
-      - 64
-      - 128
-      - 256
-      FUSE_METHOD: SUM
+    DECONV_WITH_BIAS: false
+    NUM_DECONV_LAYERS: 3
+    NUM_DECONV_FILTERS:
+    - 256
+    - 256
+    - 256
+    NUM_DECONV_KERNELS:
+    - 4
+    - 4
+    - 4
+    NUM_LAYERS: 50
 LOSS:
   USE_TARGET_WEIGHT: true
 TRAIN:
-  BATCH_SIZE_PER_GPU: 32
+  BATCH_SIZE_PER_GPU: 4
   SHUFFLE: true
   BEGIN_EPOCH: 0
-  END_EPOCH: 210
+  END_EPOCH: 100
   OPTIMIZER: adamw
-  LR: 0.001
+  LR: 0.0001
   LR_FACTOR: 0.1
   LR_STEP:
-  - 170
-  - 200
+  - 50
+  - 80
   WD: 0.0001
   GAMMA1: 0.99
   GAMMA2: 0.0
   MOMENTUM: 0.9
   NESTEROV: false
 TEST:
-  BATCH_SIZE_PER_GPU: 32
+  BATCH_SIZE_PER_GPU: 4
   COCO_BBOX_FILE: 'data/coco/person_detection_results/COCO_val2017_detections_AP_H_56_person.json'
   BBOX_THRE: 1.0
   IMAGE_THRE: 0.0

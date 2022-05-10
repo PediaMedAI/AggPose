@@ -4,10 +4,10 @@ import random
 import torch
 from PIL import Image, ImageEnhance, ImageOps
 
-# try:
-#     import accimage
-# except ImportError:
-#     accimage = None
+try:
+    import accimage
+except ImportError:
+    accimage = None
 import collections
 import numbers
 import types
@@ -34,13 +34,10 @@ _cv2_interpolation_from_str = {v: k for k, v in _cv2_interpolation_to_str.items(
 
 
 def _is_pil_image(img):
-    
-    return isinstance(img, Image.Image)
-    
-    # if accimage is not None:
-    #     return isinstance(img, (Image.Image, accimage.Image))
-    # else:
-    #     return isinstance(img, Image.Image)
+    if accimage is not None:
+        return isinstance(img, (Image.Image, accimage.Image))
+    else:
+        return isinstance(img, Image.Image)
 
 
 def _is_tensor_image(img):

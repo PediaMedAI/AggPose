@@ -2,7 +2,7 @@
 # Copyright (c) Microsoft
 # Licensed under the MIT License.
 # Written by Bin Xiao (Bin.Xiao@microsoft.com)
-# Modified by Xu Cao (xc2057@nyu.edu)
+# Modified by Hanbin Dai (daihanbin.ac@gmail.com)
 # ------------------------------------------------------------------------------
 
 from __future__ import absolute_import
@@ -47,7 +47,6 @@ class JointsDataset(Dataset):
         self.num_joints_half_body = cfg.DATASET.NUM_JOINTS_HALF_BODY
         self.prob_half_body = cfg.DATASET.PROB_HALF_BODY
         self.color_rgb = cfg.DATASET.COLOR_RGB
-        self.colorjitter = cfg.DATASET.COLORJITTER
 
         self.target_type = cfg.MODEL.TARGET_TYPE
         self.image_size = np.array(cfg.MODEL.IMAGE_SIZE)
@@ -167,8 +166,9 @@ class JointsDataset(Dataset):
                     joints, joints_vis, data_numpy.shape[1], self.flip_pairs)
                 c[0] = data_numpy.shape[1] - c[0] - 1
             
-            if self.colorjitter and random.random() <= 0.5:
+            if random.random() <= 0.5:
                 color_transform = ColorJitter(brightness=0.3, contrast=0.3, saturation=0.3, hue=0.1)
+                # logger.info("use ColorJitter")
                 data_numpy = color_transform(data_numpy)
                 
         joints_heatmap = joints.copy()
@@ -272,7 +272,7 @@ class JointsDataset(Dataset):
                 mu_x = joints[joint_id][0]
                 mu_y = joints[joint_id][1]
                 
-                # 
+                # 生成过程与hrnet的heatmap size不一样
                 x = np.arange(0, self.heatmap_size[0], 1, np.float32)
                 y = np.arange(0, self.heatmap_size[1], 1, np.float32)
                 y = y[:, np.newaxis]

@@ -1,3 +1,8 @@
+# ------------------------------------------------------------------------------
+# Licensed under the MIT License.
+# Modified by Iroh Cao (irohcao@gmail.com)
+# ------------------------------------------------------------------------------
+
 from __future__ import division
 
 import collections

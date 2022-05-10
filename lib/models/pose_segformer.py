@@ -274,20 +274,7 @@ class MixVisionTransformer(nn.Module):
         self.num_joints = num_joints
         self.depths = depths
         self.inplanes = 64
-        
-        self.hrnet_pretrained_layers = ['conv1', 'bn1', 'conv2', 'bn2', 'layer1']
-        self.segformer_pretrained_layers = ['block1', 'norm1', 'block2', 'norm2', 'block3', 'norm3', 'block4', 'norm4', 'patch_embed1', 'patch_embed2', 'patch_embed3', 'patch_embed4']
-
-        # stem net
-        self.conv1 = nn.Conv2d(3, 64, kernel_size=3, stride=2, padding=1,
-                               bias=False)
-        self.bn1 = nn.BatchNorm2d(64, momentum=BN_MOMENTUM)
-        self.conv2 = nn.Conv2d(64, 64, kernel_size=3, stride=2, padding=1,
-                               bias=False)
-        self.bn2 = nn.BatchNorm2d(64, momentum=BN_MOMENTUM)
-        self.relu = nn.ReLU(inplace=True)
-        self.layer1 = self._make_layer(Bottleneck, 64, 4)
-        
+                
         # patch_embed
         self.patch_embed1 = OverlapPatchEmbed(img_size=(img_size_x, img_size_y), patch_size=7, stride=4, in_chans=in_chans,
                                               embed_dim=embed_dims[0])
@@ -363,36 +350,21 @@ class MixVisionTransformer(nn.Module):
             if m.bias is not None:
                 m.bias.data.zero_()
     
-    def init_weights(self, cnn_pretrained='', transforer_pretrained=''):
-        if os.path.isfile(cnn_pretrained):
-            pretrained_state_dict = torch.load(cnn_pretrained)
-            logger.info('=> loading CNN pretrained model {}'.format(cnn_pretrained))
+    def init_weights(self, pretrained=''):
+        if os.path.isfile(pretrained):
+            pretrained_state_dict = torch.load(pretrained)
+            logger.info('=> loading pretrained model {}'.format(pretrained))
 
             need_init_state_dict = {}
             for name, m in pretrained_state_dict.items():
-                if name.split('.')[0] in self.hrnet_pretrained_layers \
-                   or self.hrnet_pretrained_layers[0] == '*':
+                if name.split('.')[0] in self.pretrained_layers \
+                   or self.pretrained_layers[0] == '*':
                     need_init_state_dict[name] = m
             
             self.load_state_dict(need_init_state_dict, strict=False)
-        elif cnn_pretrained:
+        elif pretrained:
             logger.error('=> please download pre-trained models first!')
-            raise ValueError('{} is not exist!'.format(cnn_pretrained))
-
-        if os.path.isfile(transforer_pretrained):
-            pretrained_state_dict = torch.load(transforer_pretrained)
-            logger.info('=> loading Transformer pretrained model {}'.format(transforer_pretrained))
-
-            need_init_state_dict = {}
-            for name, m in pretrained_state_dict.items():
-                if name.split('.')[0] in self.segformer_pretrained_layers \
-                   or self.segformer_pretrained_layers[0] == '*':
-                    need_init_state_dict[name] = m
-            
-            self.load_state_dict(need_init_state_dict, strict=False)
-        elif transforer_pretrained:
-            logger.error('=> please download pre-trained models first!')
-            raise ValueError('{} is not exist!'.format(transforer_pretrained))
+            raise ValueError('{} is not exist!'.format(pretrained))
         
     def _make_layer(self, block, planes, blocks, stride=1):
         downsample = None
@@ -450,14 +422,6 @@ class MixVisionTransformer(nn.Module):
         outs = []
         sizes = []
         
-        cnn_x = self.conv1(x)
-        cnn_x = self.bn1(cnn_x)
-        cnn_x = self.relu(cnn_x)
-        cnn_x = self.conv2(cnn_x)
-        cnn_x = self.bn2(cnn_x)
-        cnn_x = self.relu(cnn_x)
-        cnn_x = self.layer1(cnn_x)
-
         # stage 1
         x, H1, W1 = self.patch_embed1(x)
         for i, blk in enumerate(self.block1):
@@ -466,10 +430,7 @@ class MixVisionTransformer(nn.Module):
         x = x1.reshape(B, H1, W1, -1).permute(0, 3, 1, 2).contiguous()
         outs.append(x1)
         sizes.append((H1, W1))
-        
-        # merge CNN branch
-        x = self.gelu(self.recover(cnn_x) + x)
-        
+                
         # stage 2
         x, H2, W2 = self.patch_embed2(x)
         for i, blk in enumerate(self.block2):
@@ -538,6 +499,6 @@ def get_pose_net(cfg, is_train, **kwargs):
             drop_rate=0.0, drop_path_rate=0.1)
 
     if is_train and cfg['MODEL']['INIT_WEIGHTS']:
-        model.init_weights(cfg['MODEL']['PRETRAINED_CNN'], cfg['MODEL']['PRETRAINED_TRANSFORMER'])
+        model.init_weights(cfg['MODEL']['PRETRAINED'])
 
     return model

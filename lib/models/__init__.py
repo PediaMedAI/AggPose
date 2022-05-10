@@ -1,7 +1,7 @@
 # ------------------------------------------------------------------------------
-# Copyright (c) Microsoft
+# Copyright (c) SZAR-Lab
 # Licensed under the MIT License.
-# Written by Bin Xiao (Bin.Xiao@microsoft.com)
+# Modified by Iroh Cao (irohcao@gmail.com)
 # ------------------------------------------------------------------------------
 
 from __future__ import absolute_import

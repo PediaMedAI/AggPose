@@ -1,3 +1,9 @@
+# ------------------------------------------------------------------------------
+# Copyright (c) SZAR-Lab
+# Licensed under the MIT License.
+# Modified by Iroh Cao (irohcao@gmail.com)
+# ------------------------------------------------------------------------------
+
 import argparse
 import os
 import pprint
@@ -12,7 +18,7 @@ import torch.utils.data.distributed
 import torchvision.transforms as transforms
 from tensorboardX import SummaryWriter
 
-from models.pose_segformer import get_pose_net
+from models.pose_aggpose import get_pose_net
 from config import cfg
 from config import update_config
 

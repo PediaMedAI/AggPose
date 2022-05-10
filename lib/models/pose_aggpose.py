@@ -1,3 +1,9 @@
+# ------------------------------------------------------------------------------
+# Copyright (c) SZAR-Lab
+# Licensed under the MIT License.
+# Modified by Iroh Cao (irohcao@gmail.com)
+# ------------------------------------------------------------------------------
+
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
@@ -269,7 +275,7 @@ class AggPose(nn.Module):
         self.depth_general = 3
         self.inplanes = 64
         
-        self.pretrained_layers = ['block1', 'norm1', 'block2', 'norm2', 'block3', 'norm3', 'block4', 'norm4', 'patch_embed1', 'patch_embed2', 'patch_embed3', 'patch_embed4']
+        self.mit_layers = ['block1', 'norm1', 'block2', 'norm2', 'block3', 'norm3', 'block4', 'norm4', 'patch_embed1', 'patch_embed2', 'patch_embed3', 'patch_embed4']
         # stem net
         
         # patch_embed
@@ -401,7 +407,7 @@ class AggPose(nn.Module):
         self.upsample4_41 = MlpUpsample(embed_dims[3], embed_dims[0], 8)
         
         self.relu = nn.ReLU(True)
-        self.final_layer = Mlp(embed_dims[0], hidden_features=embed_dims[0], out_features=17)
+        self.final_layer = Mlp(embed_dims[0], hidden_features=embed_dims[0], out_features=num_classes)
         
         logger.info('=> init weights from normal distribution')
         self.apply(self._init_weights)
@@ -601,11 +607,6 @@ class AggPose(nn.Module):
 
     def forward(self, x):
         out = self.forward_features(x)
-        # x = self.head(x)
-        
-        # fused = [to_fused(output) for output, to_fused in zip(x, self.to_fused)]
-        # fused = torch.cat(fused, dim = 1)
-
         return out
 
 
@@ -623,7 +624,7 @@ class DWConv(nn.Module):
         return x
 
 def get_pose_net(cfg, is_train, **kwargs):
-    model = AggPose(img_size_x=cfg.MODEL.IMAGE_SIZE[1], img_size_y=cfg.MODEL.IMAGE_SIZE[0], patch_size=4, embed_dims=[64, 128, 320, 512], num_heads=[1, 2, 5, 8], mlp_ratios=[4, 4, 4, 4],
+    model = AggPose(img_size_x=cfg.MODEL.IMAGE_SIZE[1], img_size_y=cfg.MODEL.IMAGE_SIZE[0], patch_size=4, num_classes=cfg.MODEL.NUM_JOINTS, embed_dims=[64, 128, 320, 512], num_heads=[1, 2, 5, 8], mlp_ratios=[4, 4, 4, 4],
             qkv_bias=True, norm_layer=partial(nn.LayerNorm, eps=1e-6), depths=[3, 6, 40, 3], sr_ratios=[8, 4, 2, 1],
             drop_rate=0.0, drop_path_rate=0.1)
 

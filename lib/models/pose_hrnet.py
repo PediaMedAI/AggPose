@@ -499,7 +499,3 @@ def get_pose_net(cfg, is_train, **kwargs):
         model.init_weights(cfg['MODEL']['PRETRAINED'])
 
     return model
-
-
-
-# model = PoseHighResolutionNet()
