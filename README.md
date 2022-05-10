@@ -1,4 +1,4 @@
-# AggPose: Deep Aggregation Vision Transformer for Infant Pose Estimation    
+Deep Aggregation Vision Transformer for Infant Pose Estimation    
 
 [中文版](https://github.com/SZAR-LAB/AggPose/blob/main/CHINESE_README.md)  
 
