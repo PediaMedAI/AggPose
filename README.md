@@ -8,7 +8,43 @@ Movement and pose assessment of newborns lets trained pediatricians predict neur
 
 This work was accepted by IJCAI-ECAI 2022 AI for Good Track
 
-Model:    
-[Google Drive](https://drive.google.com/drive/folders/1A0FviMaB2UD8Hu5wLzZI7-2XnaWKSxAv?usp=sharing)    
+## Requirements
+
+
+## COCO Dataset
+
+Download the dataset: [COCO 2017](https://cocodataset.org/#download)
+
+The dataset folder should like this:    
+
+```
+── coco
+  │-- annotations
+  │   │-- person_keypoints_train2017.json
+  │   |-- person_keypoints_val2017.json
+  │   |-- person_keypoints_test-dev-2017.json
+  |-- person_detection_results
+  |   |-- COCO_val2017_detections_AP_H_56_person.json
+  |   |-- COCO_test-dev2017_detections_AP_H_609_person.json
+  │-- train2017
+  │   │-- 000000000009.jpg
+  │   │-- 000000000025.jpg
+  │   │-- 000000000030.jpg
+  │   │-- ...
+  `-- val2017
+      │-- 000000000139.jpg
+      │-- 000000000285.jpg
+      │-- 000000000632.jpg
+      │-- ...
+```
+
+
+AggPose Model Parameter:    
+[COCO 2017 AggPose-L 256x192](https://drive.google.com/file/d/1h9mu7EDwwWLmYcWh0z1ToknCbR08pFZU/view?usp=sharing)    
+[infantpose 2022 AggPose-L 256x192](https://drive.google.com/file/d/1wvQo5tqVr39fopm3gf9likUU1xk_sUPf/view?usp=sharing)
       
-Modified code will release soon.
+More modified code will release soon. I will update this repo continually. I am trying to re-train the model with 384x288 input size. For 256x192 input size, please use the parm in above link. Thanks! 
+
+
+
+
