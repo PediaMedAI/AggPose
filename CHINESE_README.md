@@ -1,4 +1,4 @@
-# Deep Aggregation Vision Transformer for Infant Pose Estimation (Pytorch官方实现版本)    
+# AggPose - Deep Aggregation Vision Transformer for Infant Pose Estimation (Pytorch官方实现版本)    
 
 [English Version](https://github.com/SZAR-LAB/AggPose/blob/main/README.md)    
 
